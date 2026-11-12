@@ -13,9 +13,9 @@
 <body>
   <header class="site-header">
     <div class="container">
-      <a class="logo" href="./"><picture><source srcset="assets/img/logo-texte-sombre.png" media="(prefers-color-scheme: dark)"><img src="assets/img/logo-texte.png" alt="Mon asso et Moi" width="400" height="80"></picture></a>
+      <a class="logo" href="https://mon-asso-et-moi.fr/"><picture><source srcset="assets/img/logo-texte-sombre.png" media="(prefers-color-scheme: dark)"><img src="assets/img/logo-texte.png" alt="Mon asso et Moi" width="400" height="80"></picture></a>
       <nav class="site-nav" aria-label="Menu">
-        <a href="./">Accueil</a>
+        <a href="https://mon-asso-et-moi.fr/">Accueil</a>
         <a href="assistance.html">Assistance</a>
         <a href="confidentialite.html" aria-current="page">Confidentialité</a>
       </nav>
@@ -25,7 +25,7 @@
   <main>
     <div class="container">
       <h1>Politique de confidentialité</h1>
-      <p class="updated">Dernière mise à jour : 3 novembre 2026</p>
+      <p class="updated">Dernière mise à jour : 12 novembre 2026</p>
       <p class="lead">Cette page explique quelles données l'application Mon asso et Moi utilise, pourquoi, qui peut les voir, combien de temps elles sont gardées et comment exercer vos droits.</p>
 
       <h2>1. Qui est responsable de vos données ?</h2>
@@ -44,12 +44,14 @@
         <li><strong>Documents</strong> : pièces jointes déposées sur une fiche, par exemple un certificat médical ou une autorisation parentale. Ces documents sensibles ne sont visibles que par la personne, ses parents et les membres de l'association qui en ont le droit.</li>
         <li><strong>Messages</strong> : conversations de la messagerie et e-mails envoyés par l'association depuis l'app.</li>
         <li><strong>Notifications</strong> : notifications reçues, réglages et identifiant de chaque appareil pour les notifications push.</li>
+        <li><strong>Abonnement de l'association</strong> (admins seulement) : nom, adresse e-mail et adresse de facturation de l'association, formule choisie, nombre d'adhérents comptés et factures. Le paiement se fait chez Stripe : l'éditeur ne voit jamais le numéro de carte ni l'IBAN complet.</li>
       </ul>
       <p>L'application ne contient ni publicité, ni outil de mesure d'audience, ni pisteur. Vos données ne sont jamais vendues.</p>
 
       <h2>3. Pourquoi ?</h2>
       <ul>
         <li>Faire fonctionner le service que vous ou votre association utilisez : gestion des adhérents, des cours, des paiements, messagerie (exécution du contrat).</li>
+        <li>Facturer l'abonnement de l'association et garder ses factures (exécution du contrat et obligation légale de l'éditeur).</li>
         <li>Permettre à l'association de tenir ses comptes et ses obligations, par exemple garder l'historique des paiements (obligation légale de l'association).</li>
         <li>Protéger les comptes et l'application, par exemple avec les codes de connexion envoyés par e-mail (intérêt légitime).</li>
         <li>Vous envoyer des notifications push, que vous pouvez couper dans l'app (« Mon profil ») ou dans les réglages de votre appareil (consentement).</li>
@@ -65,6 +67,7 @@
           <ul>
             <li>Supabase : hébergement de la base de données, des fichiers et des comptes, sur des serveurs situés en Irlande (Union européenne) ;</li>
             <li>Google Firebase Cloud Messaging : envoi des notifications push sur Android, iPhone et Mac ;</li>
+            <li>Stripe : paiement et facturation de l'abonnement des associations (carte bancaire ou prélèvement SEPA) ;</li>
             <li>HelloAsso : seulement si votre association y relie son compte, pour importer les adhésions et les paiements faits sur HelloAsso ;</li>
             <li>le fournisseur de messagerie de votre association : pour les e-mails qu'elle envoie depuis l'app ;</li>
             <li>GitHub : hébergement de ce site (aucune donnée de l'app).</li>
@@ -79,6 +82,7 @@
         <li><strong>Fiche et informations de l'association</strong> : tant que votre association les garde. Elles sont effacées quand l'association supprime la fiche ou se supprime de l'application.</li>
         <li><strong>Notifications</strong> : effacées 90 jours après leur lecture.</li>
         <li><strong>Pièces jointes d'un e-mail groupé</strong> : effacées une fois l'e-mail envoyé.</li>
+        <li><strong>Factures de l'abonnement</strong> : 10 ans, comme l'exige le Code de commerce.</li>
       </ul>
 
       <h2>7. Sécurité</h2>
@@ -95,7 +99,7 @@
       <p>Si vous pensez que vos droits ne sont pas respectés, vous pouvez déposer une réclamation auprès de la CNIL (<a href="https://www.cnil.fr">cnil.fr</a>).</p>
 
       <h2>9. Cookies</h2>
-      <p>Ce site n'utilise pas de cookies. La page de suppression du compte garde la connexion seulement le temps de l'opération, en mémoire, et l'oublie quand la page se ferme.</p>
+      <p>Ce site n'utilise pas de cookies. La page de suppression du compte garde la connexion seulement le temps de l'opération, en mémoire, et l'oublie quand la page se ferme. La page Abonnement garde la connexion dans l'onglet du navigateur (stockage de session), pour la retrouver au retour de la page de paiement : elle est oubliée quand l'onglet se ferme ou avec « Se déconnecter ». Les pages de paiement de Stripe ont leurs propres règles (<a href="https://stripe.com/fr/privacy">stripe.com/fr/privacy</a>).</p>
 
       <h2>10. Modifications</h2>
       <p>Cette politique peut évoluer avec l'application. La date de la dernière mise à jour est indiquée en haut de la page.</p>
@@ -107,7 +111,10 @@
       <span>© 2026 Mon asso et Moi</span>
       <nav aria-label="Liens utiles">
         <a href="mentions-legales.html">Mentions légales</a>
+        <a href="cgv.html">CGV</a>
         <a href="confidentialite.html">Confidentialité</a>
+        <a href="telecharger.html">Télécharger</a>
+        <a href="abonnement.html">Abonnement</a>
         <a href="suppression-compte.html">Supprimer mon compte</a>
         <a href="assistance.html">Assistance</a>
       </nav>

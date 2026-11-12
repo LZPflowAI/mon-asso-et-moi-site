@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src https://ttnndxznffefgezvqdgl.supabase.co; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <title>Abonnement – Mon asso et Moi</title>
+  <meta name="description" content="Abonner votre association à Mon asso et Moi, gérer le paiement et télécharger les factures.">
+  <link rel="icon" href="assets/img/favicon.png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="https://mon-asso-et-moi.fr/"><picture><source srcset="assets/img/logo-texte-sombre.png" media="(prefers-color-scheme: dark)"><img src="assets/img/logo-texte.png" alt="Mon asso et Moi" width="400" height="80"></picture></a>
+      <nav class="site-nav" aria-label="Menu">
+        <a href="https://mon-asso-et-moi.fr/">Accueil</a>
+        <a href="abonnement.html" aria-current="page">Abonnement</a>
+        <a href="assistance.html">Assistance</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h1>Abonnement de l'association</h1>
+      <p class="lead">Abonnez votre association, changez de formule, mettez à jour la carte ou l'IBAN et téléchargez les factures. Réservé aux admins de l'association.</p>
+
+      <!-- Retour de la page de paiement de Stripe -->
+      <div class="callout callout-success" id="back-ok" role="status" hidden>
+        <p><strong>Merci, votre abonnement est enregistré.</strong></p>
+        <p>Si vous avez commencé depuis l'app, vous pouvez y retourner : l'abonnement s'y met à jour tout seul.</p>
+      </div>
+      <div class="callout callout-info" id="back-cancel" role="status" hidden>
+        <p>Le paiement a été annulé : rien n'a été prélevé.</p>
+      </div>
+
+      <noscript>
+        <div class="callout callout-warning"><p>Cette page a besoin de JavaScript. Vous pouvez aussi gérer l'abonnement dans l'app Mon asso et Moi sur Windows ou Mac (Paramètres, onglet « Abonnement »).</p></div>
+      </noscript>
+
+      <!-- Étape 1 : adresse e-mail -->
+      <form class="card" id="step-email" novalidate>
+        <h2>Connexion</h2>
+        <p class="muted">Un code à 6 chiffres va être envoyé à l'adresse de votre compte Mon asso et Moi.</p>
+        <label for="email">Adresse e-mail</label>
+        <input id="email" type="email" autocomplete="email" inputmode="email" required>
+        <p class="error" id="email-error" role="alert" hidden></p>
+        <button class="btn" type="submit" id="email-submit">Envoyer le code</button>
+      </form>
+
+      <!-- Étape 2 : code reçu -->
+      <form class="card" id="step-code" novalidate hidden>
+        <h2>Le code reçu</h2>
+        <p class="muted">Si un compte utilise l'adresse <strong id="code-email"></strong>, un code à 6 chiffres vient de lui être envoyé. Pensez à regarder dans les spams.</p>
+        <label for="code">Code à 6 chiffres</label>
+        <input id="code" class="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" required>
+        <p class="error" id="code-error" role="alert" hidden></p>
+        <div class="actions">
+          <button class="btn" type="submit" id="code-submit">Se connecter</button>
+          <button class="btn btn-ghost" type="button" id="code-back">Changer d'adresse</button>
+        </div>
+      </form>
+
+      <!-- Chargement -->
+      <p class="muted" id="step-loading" role="status" hidden>Chargement…</p>
+
+      <!-- Pas d'association à gérer -->
+      <div class="card" id="step-none" hidden>
+        <h2>Aucune association à gérer</h2>
+        <p class="muted">Seuls les admins d'une association peuvent gérer son abonnement. Demandez à l'admin de votre association, ou créez la vôtre dans l'app.</p>
+        <button class="btn btn-ghost" type="button" data-logout>Se déconnecter</button>
+      </div>
+
+      <!-- Étape 3 : abonnement de l'association -->
+      <div id="step-subscription" hidden>
+        <div class="account-bar">
+          <span class="muted">Connecté : <strong id="account-email"></strong></span>
+          <button class="btn btn-ghost" type="button" data-logout>Se déconnecter</button>
+        </div>
+
+        <div id="structure-picker" hidden>
+          <label for="structure">Association</label>
+          <select id="structure"></select>
+        </div>
+
+        <p class="error" id="subscription-error" role="alert" hidden></p>
+
+        <section class="card" id="status-card" aria-live="polite">
+          <div class="card-title">
+            <h2 id="status-title">Abonnement</h2>
+            <span class="state" id="status-badge"></span>
+          </div>
+          <div class="callout callout-success" id="status-offert" hidden>
+            <p>L'association est offerte : aucun abonnement à régler.</p>
+          </div>
+          <div class="callout callout-warning" id="status-unpaid" hidden>
+            <p>Le dernier paiement a échoué. Mettez à jour la carte ou l'IBAN avec « Gérer l'abonnement ».</p>
+          </div>
+          <div class="callout callout-danger" id="status-readonly" hidden>
+            <p>L'association est en lecture seule tant que son abonnement n'est pas réglé : les données restent consultables et exportables.</p>
+          </div>
+          <dl class="kv" id="status-rows"></dl>
+
+          <!-- Sans abonnement : choix de la formule -->
+          <div id="subscribe" hidden>
+            <h3>Choisir une formule</h3>
+            <div class="choices" role="radiogroup" aria-label="Formule">
+              <label class="choice">
+                <input type="radio" name="plan" value="mensuel" checked>
+                <span><strong>Mensuelle</strong><span class="choice-price" id="price-mensuel"></span></span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="plan" value="annuel">
+                <span><strong>Annuelle</strong><span class="choice-price" id="price-annuel"></span></span>
+              </label>
+            </div>
+            <p class="muted small" id="price-detail"></p>
+            <div class="callout callout-info" id="trial-kept" hidden><p></p></div>
+            <p class="small">Paiement par carte bancaire ou prélèvement SEPA, sur la page sécurisée de Stripe. En vous abonnant, vous acceptez les <a href="cgv.html">conditions générales de vente</a>. TVA non applicable, art. 293 B du CGI.</p>
+            <div class="actions">
+              <button class="btn btn-gradient" type="button" id="subscribe-submit">S'abonner</button>
+              <button class="btn btn-ghost" type="button" data-refresh>Actualiser</button>
+            </div>
+          </div>
+
+          <!-- Abonné : portail Stripe et changement de formule -->
+          <div id="manage" hidden>
+            <p class="small">Carte ou IBAN, coordonnées de facturation, factures et résiliation, sur la page sécurisée de Stripe.</p>
+            <div class="actions">
+              <button class="btn" type="button" id="portal-submit">Gérer l'abonnement</button>
+              <button class="btn btn-secondary" type="button" id="switch-submit" hidden></button>
+              <button class="btn btn-secondary" type="button" id="switch-cancel" hidden>Garder la formule actuelle</button>
+              <button class="btn btn-ghost" type="button" data-refresh>Actualiser</button>
+            </div>
+          </div>
+          <p class="success" id="status-message" role="status" hidden></p>
+        </section>
+
+        <section class="card" id="invoices-card" hidden>
+          <h2>Factures</h2>
+          <p class="muted" id="invoices-empty" hidden>Aucune facture pour l'instant.</p>
+          <ul class="invoices" id="invoices"></ul>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>© 2026 Mon asso et Moi</span>
+      <nav aria-label="Liens utiles">
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="cgv.html">CGV</a>
+        <a href="confidentialite.html">Confidentialité</a>
+        <a href="telecharger.html">Télécharger</a>
+        <a href="abonnement.html" aria-current="page">Abonnement</a>
+        <a href="suppression-compte.html">Supprimer mon compte</a>
+        <a href="assistance.html">Assistance</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="assets/js/supabase.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/abonnement.js"></script>
+</body>
+</html>

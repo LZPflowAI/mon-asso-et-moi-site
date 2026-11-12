@@ -26,7 +26,7 @@
   <main>
     <div class="container">
       <h1>Abonnement de l'association</h1>
-      <p class="lead">Abonnez votre association, changez de formule, mettez à jour la carte ou l'IBAN et téléchargez les factures. Réservé aux admins de l'association.</p>
+      <p class="lead">Abonnez votre association, changez de formule, mettez à jour la carte bancaire et téléchargez les factures. Réservé aux admins de l'association.</p>
 
       <!-- Retour de la page de paiement de Stripe -->
       <div class="callout callout-success" id="back-ok" role="status" hidden>
@@ -97,7 +97,7 @@
             <p>L'association est offerte : aucun abonnement à régler.</p>
           </div>
           <div class="callout callout-warning" id="status-unpaid" hidden>
-            <p>Le dernier paiement a échoué. Mettez à jour la carte ou l'IBAN avec « Gérer l'abonnement ».</p>
+            <p>Le dernier paiement a échoué. Mettez à jour la carte bancaire avec « Gérer l'abonnement ».</p>
           </div>
           <div class="callout callout-danger" id="status-readonly" hidden>
             <p>L'association est en lecture seule tant que son abonnement n'est pas réglé : les données restent consultables et exportables.</p>
@@ -119,7 +119,7 @@
             </div>
             <p class="muted small" id="price-detail"></p>
             <div class="callout callout-info" id="trial-kept" hidden><p></p></div>
-            <p class="small">Paiement par carte bancaire ou prélèvement SEPA, sur la page sécurisée de Stripe. En vous abonnant, vous acceptez les <a href="cgv.html">conditions générales de vente</a>. TVA non applicable, art. 293 B du CGI.</p>
+            <p class="small">Paiement par carte bancaire (Apple Pay et Google Pay compris), sur la page sécurisée de Stripe. En vous abonnant, vous acceptez les <a href="cgv.html">conditions générales de vente</a>. TVA non applicable, art. 293 B du CGI.</p>
             <div class="actions">
               <button class="btn btn-gradient" type="button" id="subscribe-submit">S'abonner</button>
               <button class="btn btn-ghost" type="button" data-refresh>Actualiser</button>
@@ -128,7 +128,7 @@
 
           <!-- Abonné : portail Stripe et changement de formule -->
           <div id="manage" hidden>
-            <p class="small">Carte ou IBAN, coordonnées de facturation, factures et résiliation, sur la page sécurisée de Stripe.</p>
+            <p class="small">Carte bancaire, coordonnées de facturation, factures et résiliation, sur la page sécurisée de Stripe.</p>
             <div class="actions">
               <button class="btn" type="button" id="portal-submit">Gérer l'abonnement</button>
               <button class="btn btn-secondary" type="button" id="switch-submit" hidden></button>

@@ -355,7 +355,7 @@
     $('trial-kept').hidden = !kept;
     if (kept) {
       $('trial-kept').firstElementChild.textContent =
-        'L’essai gratuit continue : le premier prélèvement aura lieu le ' + date(trialEnd) + '.';
+        'L’essai gratuit continue : le premier paiement aura lieu le ' + date(trialEnd) + '.';
     }
   }
 

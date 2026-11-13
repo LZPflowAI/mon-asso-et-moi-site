@@ -87,7 +87,7 @@
 
   // ------------------------------------------------------------- Connexion
   if (!window.supabase || !config.supabaseUrl || !config.supabaseAnonKey) {
-    setError('email-error', 'Le service est indisponible pour le moment. Écrivez-nous à contact@cedriczarb.fr.');
+    setError('email-error', 'Le service est indisponible pour le moment. Écrivez-nous à contact@mon-asso-et-moi.fr.');
     $('email-submit').disabled = true;
     return;
   }
